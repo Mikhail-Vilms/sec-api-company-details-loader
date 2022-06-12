@@ -12,11 +12,11 @@ namespace SecApiCompanyDetailsLoader.Repositories
     {
         private AmazonDynamoDBClient _dynamoClient;
         private Table _dynamoTable;
-        private string _tableName = "Sec-Api-Data";
+        private string _tableName = "Sec-Api-Financial-Data";
 
         public CompanyDetailsRepository()
         {
-            _dynamoClient = new AmazonDynamoDBClient(RegionEndpoint.USEast1);
+            _dynamoClient = new AmazonDynamoDBClient(RegionEndpoint.USWest2);
             _dynamoTable = Table.LoadTable(_dynamoClient, _tableName, true);
         }
 
@@ -26,7 +26,8 @@ namespace SecApiCompanyDetailsLoader.Repositories
             {
                 PartitionKey = companyDetailsDto.TickerSymbol,
                 SortKey = "CIK_NUMBER_LOOKUP",
-                companyDetailsDto.CikNumber
+                companyDetailsDto.CikNumber,
+                Title = companyDetailsDto.Title
             };
 
             var documentJson = JsonSerializer.Serialize(newItem);
@@ -41,11 +42,8 @@ namespace SecApiCompanyDetailsLoader.Repositories
             {
                 PartitionKey = companyDetailsDto.CikNumber,
                 SortKey = "COMPANY_DETAILS_LOOKUP",
-                CompanyDetails = new Dictionary<string, string>()
-                {
-                    { "TickerSymbol" , companyDetailsDto.TickerSymbol},
-                    { "Title", companyDetailsDto.Title}
-                }
+                TickerSymbol = companyDetailsDto.TickerSymbol,
+                Title = companyDetailsDto.Title
             };
 
             var documentJson = JsonSerializer.Serialize(newItem);
