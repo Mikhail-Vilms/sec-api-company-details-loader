@@ -52,24 +52,21 @@ namespace SecApiCompanyDetailsLoader.Repositories
             await _dynamoTable.PutItemAsync(document);
         }
 
-        //public async Task SaveToDynamo(
-        //    string cikNumber,
-        //    Dictionary<string, FinancialStatementNode> financialStatementPositions)
-        //{
-        //    using var ddbClient = new AmazonDynamoDBClient(RegionEndpoint.USEast1);
-        //    var dynamoTable = Table.LoadTable(ddbClient, _tableName, true);
+        public async Task SaveToListOfCompanies(CompanyDetailsDto companyDetailsDto)
+        {
+            var newItem = new
+            {
+                PartitionKey = "LIST_OF_COMPANIES",
+                SortKey = companyDetailsDto.TickerSymbol,
+                IsActive = false,
+                CikNumber = companyDetailsDto.CikNumber,
+                Title = companyDetailsDto.Title
+            };
 
-        //    ReportStructureDynamoDbItem newItem = new ReportStructureDynamoDbItem()
-        //    {
-        //        cik = cikNumber,
-        //        tag = "CashFlowStatementStructure",
-        //        FinancialPositions = financialStatementPositions.Values.ToList()
-        //    };
+            var documentJson = JsonSerializer.Serialize(newItem);
+            var document = Document.FromJson(documentJson);
 
-        //    var documentJson = JsonSerializer.Serialize(newItem);
-        //    var document = Document.FromJson(documentJson);
-
-        //    await dynamoTable.PutItemAsync(document);
-        //}
+            await _dynamoTable.PutItemAsync(document);
+        }
     }
 }

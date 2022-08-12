@@ -15,8 +15,9 @@ namespace SecApiCompanyDetailsLoader.Services
 
         public async Task Load(CompanyDetailsDto companyDetailsDto)
         {
-            await _companyDetailsRepository.SaveLookupItem_CikNumberByTickerSymbol(companyDetailsDto);
-            await _companyDetailsRepository.SaveLookupItem_CompanyDetailsByCikNumber(companyDetailsDto);
+            //await _companyDetailsRepository.SaveLookupItem_CikNumberByTickerSymbol(companyDetailsDto);
+            //await _companyDetailsRepository.SaveLookupItem_CompanyDetailsByCikNumber(companyDetailsDto);
+            await _companyDetailsRepository.SaveToListOfCompanies(companyDetailsDto);
         }
     }
 }

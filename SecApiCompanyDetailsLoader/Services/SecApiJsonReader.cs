@@ -53,7 +53,7 @@ namespace SecApiCompanyDetailsLoader.Services
 
                 while (reader.Read())
                 {
-                    if (_counter > 1000)
+                    if (_counter > 500)
                     {
                         return;
                     }
