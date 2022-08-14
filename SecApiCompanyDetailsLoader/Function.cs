@@ -1,6 +1,7 @@
-
 using Amazon.Lambda.Core;
-using SecApiCompanyDetailsLoader.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using SecApiCompanyDetailsLoader.IServices;
 using System.Threading.Tasks;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
@@ -10,11 +11,18 @@ namespace SecApiCompanyDetailsLoader
 {
     public class Function
     {
-        private readonly SecApiJsonReader secApiJsonReader;
+        private readonly ICompanyDetailsLoader _companyDetailsLoader;
 
         public Function()
         {
-            secApiJsonReader = new SecApiJsonReader();
+            var host = new HostBuilder()
+               .SetupHostForLambda()
+               .Build();
+
+            var serviceProvider = host.Services;
+
+            _companyDetailsLoader = serviceProvider
+                .GetRequiredService<ICompanyDetailsLoader>();
         }
 
         /// <summary>
@@ -25,8 +33,14 @@ namespace SecApiCompanyDetailsLoader
         /// <returns></returns>
         public async Task<string> FunctionHandler(string input, ILambdaContext context)
         {
-            await secApiJsonReader.ReadAndProcess();
-            return input?.ToUpper();
+            void Log(string logMessage)
+            {
+                context.Logger.LogLine($"[RequestId: {context.AwsRequestId}]: {logMessage}");
+            }
+
+            await _companyDetailsLoader.Load(Log);
+
+            return "List of companies has been loaded <<<<<";
         }
     }
 }
