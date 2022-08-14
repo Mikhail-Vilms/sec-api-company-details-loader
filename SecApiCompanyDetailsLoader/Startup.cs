@@ -17,9 +17,6 @@ namespace SecApiCompanyDetailsLoader
             .ConfigureServices((context, serviceCollection) => serviceCollection
                 .AddScoped<ICompanyDetailsLoader, CompanyDetailsLoader>()
                 .AddSingleton<ISecApiClient, SecApiClient>()
-                //.AddSingleton<IDeserializer, Deserializer>()
-                //.AddSingleton<IFinancialPositionLoader, FinancialPositionLoader>()
-                //.AddSingleton<ISecApiClient, SecApiClient>()
                 .AddSingleton<IDynamoDBContext>(provider =>
                 {
                     var client = new AmazonDynamoDBClient(RegionEndpoint.USWest2);

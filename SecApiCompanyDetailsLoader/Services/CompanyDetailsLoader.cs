@@ -4,7 +4,6 @@ using SecApiCompanyDetailsLoader.IServices;
 using SecApiCompanyDetailsLoader.Models;
 using System;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SecApiCompanyDetailsLoader.Services
