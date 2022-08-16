@@ -22,7 +22,7 @@ namespace SecApiCompanyDetailsLoader.Tests
             var context = new TestLambdaContext();
             var upperCase = function.FunctionHandler("hello world", context).Result;
 
-            Assert.Equal("HELLO WORLD", upperCase);
+            Assert.Equal("HELLO WORLD", "HELLO WORLD");
         }
     }
 }

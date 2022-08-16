@@ -37,7 +37,7 @@ namespace SecApiCompanyDetailsLoader.Services
 
                 while (reader.Read())
                 {
-                    if (_counter > 500)
+                    if (_counter >= 500)
                     {
                         return;
                     }
@@ -76,6 +76,15 @@ namespace SecApiCompanyDetailsLoader.Services
                         SortKey = companyDetailsDto.TickerSymbol,
                         IsActive = false,
                         CikNumber = companyDetailsDto.CikNumber,
+                        Title = companyDetailsDto.Title
+                    });
+                await _dynamoDbContext
+                    .SaveAsync(new CompanyDynamoItem()
+                    {
+                        PartitionKey = "LIST_OF_COMPANIES_BY_CIK_NUMBER",
+                        SortKey = companyDetailsDto.CikNumber,
+                        IsActive = false,
+                        CikNumber = companyDetailsDto.TickerSymbol,
                         Title = companyDetailsDto.Title
                     });
             }
